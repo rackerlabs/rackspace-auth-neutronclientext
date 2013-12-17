@@ -23,13 +23,13 @@ def read_file(file_name):
 
 setuptools.setup(
     name="rackspace-auth-openstack",
-    version="1.1",
+    version="1.2",
     author="OpenStack",
     author_email="openstack-dev@lists.openstack.org",
     description="Rackspace Auth Plugin for OpenStack Clients.",
     long_description=read_file("README.rst"),
     license="Apache License, Version 2.0",
-    url="https://github.com/emonty/rackspace-auth-openstack",
+    url="https://github.com/rackerlabs/rackspace-auth-openstack",
     packages=setuptools.find_packages(exclude=['tests', 'tests.*']),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -38,6 +38,7 @@ setuptools.setup(
         "Intended Audience :: Information Technology",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
+        "Environment :: OpenStack",
         "Programming Language :: Python"
     ],
     entry_points={
