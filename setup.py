@@ -52,6 +52,9 @@ setuptools.setup(
             "rackspace_us = rackspace_auth_openstack.plugin:authenticate_us",
             "rackspace_uk = rackspace_auth_openstack.plugin:authenticate_uk",
             "rackspace = rackspace_auth_openstack.plugin:authenticate_us"
+        ],
+        "openstack.client.auth_plugin": [
+            "rackspace = rackspace_auth_openstack.plugin:RackspaceAuthPlugin"
         ]
     }
 )

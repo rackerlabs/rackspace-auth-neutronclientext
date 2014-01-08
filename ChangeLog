@@ -3,6 +3,12 @@ CHANGES
 =======
 
 ---
+1.2
+---
+
+* Require only username and apiKey for Rackspace authentication
+
+---
 1.1
 ---
 
