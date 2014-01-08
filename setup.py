@@ -30,7 +30,8 @@ setuptools.setup(
     long_description=read_file("README.rst"),
     license="Apache License, Version 2.0",
     url="https://github.com/rackerlabs/rackspace-auth-openstack",
-    packages=setuptools.find_packages(exclude=['tests', 'tests.*']),
+    install_requires=['python-novaclient'],
+    packages=setuptools.find_packages(exclude=['tests', 'tests.*', 'test_*']),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -51,6 +52,9 @@ setuptools.setup(
             "rackspace_us = rackspace_auth_openstack.plugin:authenticate_us",
             "rackspace_uk = rackspace_auth_openstack.plugin:authenticate_uk",
             "rackspace = rackspace_auth_openstack.plugin:authenticate_us"
+        ],
+        "openstack.client.auth_plugin": [
+            "rackspace = rackspace_auth_openstack.plugin:RackspaceAuthPlugin"
         ]
     }
 )
