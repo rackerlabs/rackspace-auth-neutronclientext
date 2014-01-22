@@ -23,7 +23,7 @@ def read_file(file_name):
 
 setuptools.setup(
     name="rackspace-auth-openstack",
-    version="1.2",
+    version="1.3",
     author="OpenStack",
     author_email="openstack-dev@lists.openstack.org",
     description="Rackspace Auth Plugin for OpenStack Clients.",
