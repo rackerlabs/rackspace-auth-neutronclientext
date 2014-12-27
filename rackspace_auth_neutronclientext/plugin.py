@@ -15,13 +15,21 @@
 
 import json
 
-import neutronclient.auth_plugin
+import neutronclient.common.auth_plugin
 from neutronclient.common import exceptions
 
-class RackspaceAuthPlugin(neutronclient.auth_plugin.BaseAuthPlugin):
+
+class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
         _authenticate(cls, auth_url)
+
+    def pre_hook(self, endpoint_url, url, method, **kwargs):
+        '''Fixes the .../v2.0/v2.0/... bug.'''
+        if endpoint_url.endswith(url[:5]):
+            endpoint_url = endpoint_url[:-5]
+        return endpoint_url, url, method, kwargs
+
 
 
 def auth_url_us():
@@ -45,13 +53,11 @@ def _authenticate(cls, auth_url):
             "apiKey": cls.password},
         }}
     token_url = cls.auth_url + "/tokens"
+
     resp, resp_body = cls._cs_request(token_url, "POST",
                                        body=json.dumps(body),
                                        content_type="application/json",
                                        allow_redirects=True)
-    status_code = cls.get_status_code(resp)
-    if status_code != 200:
-        raise exceptions.Unauthorized(message=resp_body)
     if resp_body:
         try:
             resp_body = json.loads(resp_body)
@@ -59,8 +65,7 @@ def _authenticate(cls, auth_url):
             pass
     else:
         resp_body = None
-    cls._extract_service_catalog(resp_body)
-    # return cls._authenticate(auth_url, body)
+    return resp_body
 
 
 def authenticate_us(cls,
