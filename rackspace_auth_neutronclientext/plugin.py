@@ -15,11 +15,11 @@
 
 import json
 
-import neutronclient.auth_plugin
+import neutronclient.common.auth_plugin
 from neutronclient.common import exceptions
 
 
-class RackspaceAuthPlugin(neutronclient.auth_plugin.BaseAuthPlugin):
+class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
         _authenticate(cls, auth_url)
