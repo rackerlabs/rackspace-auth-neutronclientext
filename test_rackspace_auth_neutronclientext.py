@@ -12,14 +12,14 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # For integration tests with novaclient
-import novaclient
-from novaclient import shell
-from novaclient import auth_plugin
+import neutronclient
+from neutronclient import shell
+from neutronclient.common import auth_plugin
 
-import rackspace_auth_openstack.plugin
+import rackspace_auth_neutronclientext.plugin
 
-class TestNovaclientIntegration(object):
-    '''Integration test with python-novaclient'''
+class TestNeutronclientIntegration(object):
+    '''Integration test with python-neutronclient'''
 
     @httpretty.activate
     def test_shell(self):
@@ -82,7 +82,7 @@ class TestPlugin(object):
 
     @httpretty.activate
     def test_entry_points(self):
-        from rackspace_auth_openstack import plugin
+        from rackspace_auth_neutronclient import plugin
 
         plugin.auth_url_us
         plugin.auth_url_uk
@@ -96,8 +96,8 @@ class TestPlugin(object):
         us_auth = "https://identity.api.rackspacecloud.com/v2.0/"
         uk_auth = "https://lon.identity.api.rackspacecloud.com/v2.0/"
 
-        assert rackspace_auth_openstack.plugin.auth_url_us() == us_auth
-        assert rackspace_auth_openstack.plugin.auth_url_uk() == uk_auth
+        assert rackspace_auth_neutronclientext.plugin.auth_url_us() == us_auth
+        assert rackspace_auth_neutronclientext.plugin.auth_url_uk() == uk_auth
 
     @httpretty.activate
     def test_plugin(self):
@@ -139,8 +139,8 @@ class TestPlugin(object):
         dummy_us = make_dummy("https://identity.api.rackspacecloud.com/v2.0/")
         dummy_uk = make_dummy("https://lon.identity.api.rackspacecloud.com/v2.0/")
 
-        rackspace_auth_openstack.plugin.authenticate_us(dummy_us())
-        rackspace_auth_openstack.plugin.authenticate_uk(dummy_uk())
+        rackspace_auth_neutronclientext.plugin.authenticate_us(dummy_us())
+        rackspace_auth_neutronclientext.plugin.authenticate_uk(dummy_uk())
 
 
 
