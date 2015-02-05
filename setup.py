@@ -22,15 +22,15 @@ def read_file(file_name):
 
 
 setuptools.setup(
-    name="rackspace-auth-openstack",
-    version="1.3",
+    name="rackspace-auth-neutronclientext",
+    version="1.0",
     author="OpenStack",
     author_email="openstack-dev@lists.openstack.org",
-    description="Rackspace Auth Plugin for OpenStack Clients.",
+    description="Rackspace Auth Plugin for OpenStack Neutron Clients.",
     long_description=read_file("README.rst"),
     license="Apache License, Version 2.0",
-    url="https://github.com/rackerlabs/rackspace-auth-openstack",
-    install_requires=['python-novaclient'],
+    url="https://github.com/rackerlabs/rackspace-auth-neutronclientext",
+    install_requires=['python-neutronclient'],
     packages=setuptools.find_packages(exclude=['tests', 'tests.*', 'test_*']),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -44,17 +44,17 @@ setuptools.setup(
     ],
     entry_points={
         "openstack.client.auth_url": [
-            "rackspace_us = rackspace_auth_openstack.plugin:auth_url_us",
-            "rackspace_uk = rackspace_auth_openstack.plugin:auth_url_uk",
-            "rackspace = rackspace_auth_openstack.plugin:auth_url_us"
+            "rackspace_us = rackspace_auth_neutronclientext.plugin:auth_url_us",
+            "rackspace_uk = rackspace_auth_neutronclientext.plugin:auth_url_uk",
+            "rackspace = rackspace_auth_neutronclientext.plugin:auth_url_us"
         ],
         "openstack.client.authenticate": [
-            "rackspace_us = rackspace_auth_openstack.plugin:authenticate_us",
-            "rackspace_uk = rackspace_auth_openstack.plugin:authenticate_uk",
-            "rackspace = rackspace_auth_openstack.plugin:authenticate_us"
+            "rackspace_us = rackspace_auth_neutronclientext.plugin:authenticate_us",
+            "rackspace_uk = rackspace_auth_neutronclientext.plugin:authenticate_uk",
+            "rackspace = rackspace_auth_neutronclientext.plugin:authenticate_us"
         ],
         "openstack.client.auth_plugin": [
-            "rackspace = rackspace_auth_openstack.plugin:RackspaceAuthPlugin"
+            "rackspace = rackspace_auth_neutronclientext.plugin:RackspaceAuthPlugin"
         ]
     }
 )

@@ -13,9 +13,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import novaclient.auth_plugin
+import neutronclient.auth_plugin
 
-class RackspaceAuthPlugin(novaclient.auth_plugin.BaseAuthPlugin):
+class RackspaceAuthPlugin(neutronclient.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
         _authenticate(cls, auth_url)
