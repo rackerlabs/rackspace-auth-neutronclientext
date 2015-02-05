@@ -13,9 +13,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import novaclient.auth_plugin
+import json
 
-class RackspaceAuthPlugin(novaclient.auth_plugin.BaseAuthPlugin):
+import neutronclient.auth_plugin
+from neutronclient.common import exceptions
+
+class RackspaceAuthPlugin(neutronclient.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
         _authenticate(cls, auth_url)
@@ -33,12 +36,31 @@ def auth_url_uk():
 
 def _authenticate(cls, auth_url):
     """Authenticate against the Rackspace auth service."""
+    if not auth_url:
+        raise exceptions.NoAuthURLProvided()
+
     body = {"auth": {
         "RAX-KSKEY:apiKeyCredentials": {
-            "username": cls.user,
+            "username": cls.username,
             "apiKey": cls.password},
         }}
-    return cls._authenticate(auth_url, body)
+    token_url = cls.auth_url + "/tokens"
+    resp, resp_body = cls._cs_request(token_url, "POST",
+                                       body=json.dumps(body),
+                                       content_type="application/json",
+                                       allow_redirects=True)
+    status_code = cls.get_status_code(resp)
+    if status_code != 200:
+        raise exceptions.Unauthorized(message=resp_body)
+    if resp_body:
+        try:
+            resp_body = json.loads(resp_body)
+        except ValueError:
+            pass
+    else:
+        resp_body = None
+    cls._extract_service_catalog(resp_body)
+    # return cls._authenticate(auth_url, body)
 
 
 def authenticate_us(cls,
