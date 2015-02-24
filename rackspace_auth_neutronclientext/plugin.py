@@ -13,12 +13,23 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import novaclient.auth_plugin
+import json
 
-class RackspaceAuthPlugin(novaclient.auth_plugin.BaseAuthPlugin):
+import neutronclient.common.auth_plugin
+from neutronclient.common import exceptions
+
+
+class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
         _authenticate(cls, auth_url)
+
+    def pre_hook(self, endpoint_url, url, method, **kwargs):
+        '''Fixes the .../v2.0/v2.0/... bug.'''
+        if endpoint_url.endswith(url[:5]):
+            endpoint_url = endpoint_url[:-5]
+        return endpoint_url, url, method, kwargs
+
 
 
 def auth_url_us():
@@ -33,12 +44,28 @@ def auth_url_uk():
 
 def _authenticate(cls, auth_url):
     """Authenticate against the Rackspace auth service."""
+    if not auth_url:
+        raise exceptions.NoAuthURLProvided()
+
     body = {"auth": {
         "RAX-KSKEY:apiKeyCredentials": {
-            "username": cls.user,
+            "username": cls.username,
             "apiKey": cls.password},
         }}
-    return cls._authenticate(auth_url, body)
+    token_url = cls.auth_url + "/tokens"
+
+    resp, resp_body = cls._cs_request(token_url, "POST",
+                                       body=json.dumps(body),
+                                       content_type="application/json",
+                                       allow_redirects=True)
+    if resp_body:
+        try:
+            resp_body = json.loads(resp_body)
+        except ValueError:
+            pass
+    else:
+        resp_body = None
+    return resp_body
 
 
 def authenticate_us(cls,
