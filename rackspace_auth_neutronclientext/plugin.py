@@ -1,4 +1,3 @@
-# Copyright 2012 Rackspace
 # Copyright 2012 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -22,14 +21,13 @@ from neutronclient.common import exceptions
 class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
     def authenticate(self, cls, auth_url):
-        _authenticate(cls, auth_url)
+        return _authenticate(cls, auth_url)
 
     def pre_hook(self, endpoint_url, url, method, **kwargs):
         '''Fixes the .../v2.0/v2.0/... bug.'''
         if endpoint_url.endswith(url[:5]):
             endpoint_url = endpoint_url[:-5]
         return endpoint_url, url, method, kwargs
-
 
 
 def auth_url_us():
