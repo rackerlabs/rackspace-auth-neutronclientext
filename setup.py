@@ -14,7 +14,6 @@
 
 import os
 import setuptools
-import sys
 
 
 def read_file(file_name):
@@ -23,7 +22,7 @@ def read_file(file_name):
 
 setuptools.setup(
     name="rackspace-auth-neutronclientext",
-    version="1.1",
+    version="1.2",
     author="Rackspace",
     author_email="neutron-requests@lists.rackspace.com",
     description="Rackspace Auth Plugin for OpenStack Neutron Clients.",
