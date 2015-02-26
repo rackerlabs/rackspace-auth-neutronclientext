@@ -24,8 +24,8 @@ def read_file(file_name):
 setuptools.setup(
     name="rackspace-auth-neutronclientext",
     version="1.0",
-    author="OpenStack",
-    author_email="openstack-dev@lists.openstack.org",
+    author="Rackspace",
+    author_email="neutron-requests@lists.rackspace.com",
     description="Rackspace Auth Plugin for OpenStack Neutron Clients.",
     long_description=read_file("README.rst"),
     license="Apache License, Version 2.0",
