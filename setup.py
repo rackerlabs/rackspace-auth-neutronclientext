@@ -23,14 +23,14 @@ def read_file(file_name):
 
 setuptools.setup(
     name="rackspace-auth-neutronclientext",
-    version="1.0",
+    version="1.1",
     author="Rackspace",
     author_email="neutron-requests@lists.rackspace.com",
     description="Rackspace Auth Plugin for OpenStack Neutron Clients.",
     long_description=read_file("README.rst"),
     license="Apache License, Version 2.0",
     url="https://github.com/rackerlabs/rackspace-auth-neutronclientext",
-    install_requires=['python-neutronclient'],
+    install_requires=['rackspace-python-neutronclient'],
     packages=setuptools.find_packages(exclude=['tests', 'tests.*', 'test_*']),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
