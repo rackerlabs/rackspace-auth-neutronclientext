@@ -22,7 +22,7 @@ def read_file(file_name):
 
 setuptools.setup(
     name="rackspace-auth-neutronclientext",
-    version="1.2",
+    version="1.3",
     author="Rackspace",
     author_email="neutron-requests@lists.rackspace.com",
     description="Rackspace Auth Plugin for OpenStack Neutron Clients.",
@@ -42,17 +42,17 @@ setuptools.setup(
         "Programming Language :: Python"
     ],
     entry_points={
-        "openstack.client.auth_url": [
+        "rackspace.neutronclient.auth_url": [
             "rackspace_us = rackspace_auth_neutronclientext.plugin:auth_url_us",
             "rackspace_uk = rackspace_auth_neutronclientext.plugin:auth_url_uk",
             "rackspace = rackspace_auth_neutronclientext.plugin:auth_url_us"
         ],
-        "openstack.client.authenticate": [
+        "rackspace.neutronclient.authenticate": [
             "rackspace_us = rackspace_auth_neutronclientext.plugin:authenticate_us",
             "rackspace_uk = rackspace_auth_neutronclientext.plugin:authenticate_uk",
             "rackspace = rackspace_auth_neutronclientext.plugin:authenticate_us"
         ],
-        "openstack.client.auth_plugin": [
+        "rackspace.neutronclient.auth_plugin": [
             "rackspace = rackspace_auth_neutronclientext.plugin:RackspaceAuthPlugin"
         ]
     }
