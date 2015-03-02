@@ -11,19 +11,19 @@ import pytest
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-# For integration tests with novaclient
-import novaclient
-from novaclient import shell
-from novaclient import auth_plugin
+# For integration tests with neutronclient
+import neutronclient
+from neutronclient import shell
+from neutronclient.common import auth_plugin
 
-import rackspace_auth_openstack.plugin
+import rackspace_auth_neutronclientext.plugin
 
-class TestNovaclientIntegration(object):
-    '''Integration test with python-novaclient'''
+class TestNeutronclientIntegration(object):
+    '''Integration test with python-neutronclient'''
 
     @httpretty.activate
     def test_shell(self):
-        '''Test to make sure this plugin integrates with novaclient'''
+        '''Test to make sure this plugin integrates with neutronclient'''
 
         fake_tenant_id = "123456"
         fake_token = format(random.randint(0,2**(32*4)), 'x')
@@ -82,13 +82,15 @@ class TestPlugin(object):
 
     @httpretty.activate
     def test_entry_points(self):
-        from rackspace_auth_openstack import plugin
+        from rackspace_auth_neutronclientext import plugin
 
         plugin.auth_url_us
         plugin.auth_url_uk
+        plugin.auth_url_noauth
         plugin._authenticate
         plugin.authenticate_us
         plugin.authenticate_uk
+        plugin.authenticate_noauth
 
 
     @httpretty.activate
@@ -96,8 +98,10 @@ class TestPlugin(object):
         us_auth = "https://identity.api.rackspacecloud.com/v2.0/"
         uk_auth = "https://lon.identity.api.rackspacecloud.com/v2.0/"
 
-        assert rackspace_auth_openstack.plugin.auth_url_us() == us_auth
-        assert rackspace_auth_openstack.plugin.auth_url_uk() == uk_auth
+        assert rackspace_auth_neutronclientext.plugin.auth_url_us() == us_auth
+        assert rackspace_auth_neutronclientext.plugin.auth_url_uk() == uk_auth
+        assert rackspace_auth_neutronclientext.plugin.auth_url_noauth() == \
+            'noauth_auth_url_bypass'
 
     @httpretty.activate
     def test_plugin(self):
@@ -139,8 +143,8 @@ class TestPlugin(object):
         dummy_us = make_dummy("https://identity.api.rackspacecloud.com/v2.0/")
         dummy_uk = make_dummy("https://lon.identity.api.rackspacecloud.com/v2.0/")
 
-        rackspace_auth_openstack.plugin.authenticate_us(dummy_us())
-        rackspace_auth_openstack.plugin.authenticate_uk(dummy_uk())
+        rackspace_auth_neutronclientext.plugin.authenticate_us(dummy_us())
+        rackspace_auth_neutronclientext.plugin.authenticate_uk(dummy_uk())
 
 
 
