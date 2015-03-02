@@ -34,14 +34,24 @@ def auth_url_us():
     """Return the Rackspace Cloud US Auth URL"""
     return "https://identity.api.rackspacecloud.com/v2.0/"
 
-
 def auth_url_uk():
     """Return the Rackspace Cloud UK Auth URL"""
     return "https://lon.identity.api.rackspacecloud.com/v2.0/"
 
+def auth_url_noauth():
+    """Noauth by definition doesn't need an auth url"""
+    return "noauth_auth_url_bypass"
 
 def _authenticate(cls, auth_url):
-    """Authenticate against the Rackspace auth service."""
+    """Authenticate against noauth or the Rackspace auth service."""
+    if auth_url == "noauth_auth_url_bypass":
+        if not cls.endpoint_url:
+            message = ('For "noauth" authentication strategy, the endpoint '
+                       'must be specified either in the constructor or '
+                       'using --os-url')
+            raise exceptions.Unauthorized(message=message)
+        else:
+            return None
     if not auth_url:
         raise exceptions.NoAuthURLProvided()
 
@@ -65,6 +75,11 @@ def _authenticate(cls, auth_url):
         resp_body = None
     return resp_body
 
+
+def authenticate_noauth(cls,
+                        auth_url=auth_url_noauth()):
+    """Do not authenticate, but do ensure there is an endpoint_url"""
+    return _authenticate(cls, auth_url)
 
 def authenticate_us(cls,
                     auth_url=auth_url_us()):

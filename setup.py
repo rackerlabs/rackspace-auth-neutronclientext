@@ -45,15 +45,18 @@ setuptools.setup(
         "rackspace.neutronclient.auth_url": [
             "rackspace_us = rackspace_auth_neutronclientext.plugin:auth_url_us",
             "rackspace_uk = rackspace_auth_neutronclientext.plugin:auth_url_uk",
-            "rackspace = rackspace_auth_neutronclientext.plugin:auth_url_us"
+            "rackspace = rackspace_auth_neutronclientext.plugin:auth_url_us",
+            "noauth = rackspace_auth_neutronclientext.plugin:noauth_url"
         ],
         "rackspace.neutronclient.authenticate": [
             "rackspace_us = rackspace_auth_neutronclientext.plugin:authenticate_us",
             "rackspace_uk = rackspace_auth_neutronclientext.plugin:authenticate_uk",
-            "rackspace = rackspace_auth_neutronclientext.plugin:authenticate_us"
+            "rackspace = rackspace_auth_neutronclientext.plugin:authenticate_us",
+            "noauth = rackspace_auth_neutronclientext.plugin:authenticate_noauth"
         ],
         "rackspace.neutronclient.auth_plugin": [
-            "rackspace = rackspace_auth_neutronclientext.plugin:RackspaceAuthPlugin"
+            "rackspace = rackspace_auth_neutronclientext.plugin:RackspaceAuthPlugin",
+            "noauth = rackspace_auth_neutronclientext.plugin:RackspaceAuthPlugin"
         ]
     }
 )
