@@ -19,7 +19,9 @@ from neutronclient.common import exceptions
 
 
 class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
-    '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
+    '''The RackspaceAuthPlugin simply provides authenticate, no extra
+    options.
+    '''
     def authenticate(self, cls, auth_url):
         return _authenticate(cls, auth_url)
 
@@ -34,17 +36,20 @@ def auth_url_us():
     """Return the Rackspace Cloud US Auth URL"""
     return "https://identity.api.rackspacecloud.com/v2.0/"
 
+
 def auth_url_uk():
     """Return the Rackspace Cloud UK Auth URL"""
     return "https://lon.identity.api.rackspacecloud.com/v2.0/"
 
+
 def auth_url_noauth():
     """Noauth by definition doesn't need an auth url"""
-    return "noauth_auth_url_bypass"
+    return "noauth"
+
 
 def _authenticate(cls, auth_url):
     """Authenticate against noauth or the Rackspace auth service."""
-    if auth_url == "noauth_auth_url_bypass":
+    if cls.auth_strategy == 'noauth':
         if not cls.endpoint_url:
             message = ('For "noauth" authentication strategy, the endpoint '
                        'must be specified either in the constructor or '
@@ -56,16 +61,16 @@ def _authenticate(cls, auth_url):
         raise exceptions.NoAuthURLProvided()
 
     body = {"auth": {
-        "RAX-KSKEY:apiKeyCredentials": {
-            "username": cls.username,
-            "apiKey": cls.password},
-        }}
+            "RAX-KSKEY:apiKeyCredentials": {
+                "username": cls.username,
+                "apiKey": cls.password},
+            }}
     token_url = cls.auth_url + "/tokens"
 
     resp, resp_body = cls._cs_request(token_url, "POST",
-                                       body=json.dumps(body),
-                                       content_type="application/json",
-                                       allow_redirects=True)
+                                      body=json.dumps(body),
+                                      content_type="application/json",
+                                      allow_redirects=True)
     if resp_body:
         try:
             resp_body = json.loads(resp_body)
@@ -81,10 +86,12 @@ def authenticate_noauth(cls,
     """Do not authenticate, but do ensure there is an endpoint_url"""
     return _authenticate(cls, auth_url)
 
+
 def authenticate_us(cls,
                     auth_url=auth_url_us()):
     """Authenticate against the Rackspace US auth service."""
     return _authenticate(cls, auth_url)
+
 
 def authenticate_uk(cls,
                     auth_url=auth_url_uk()):
