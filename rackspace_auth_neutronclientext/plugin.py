@@ -13,10 +13,11 @@
 # under the License.
 
 import json
-
+import logging
 import neutronclient.common.auth_plugin
 from neutronclient.common import exceptions
 
+_logger = logging.getLogger(__name__)
 
 class RackspaceAuthPlugin(neutronclient.common.auth_plugin.BaseAuthPlugin):
     '''The RackspaceAuthPlugin simply provides authenticate, no extra options'''
@@ -43,8 +44,12 @@ def auth_url_noauth():
     return "noauth_auth_url_bypass"
 
 def _authenticate(cls, auth_url):
+    _logger.debug('_authenticate called as _authenticate(%s, %s)' % (cls, auth_url))
+    _logger.debug('cls contains: %s' % dir(cls))
+    _logger.debug('cls.auth_strategy is: %s' % cls.auth_strategy)
+
     """Authenticate against noauth or the Rackspace auth service."""
-    if auth_url == "noauth_auth_url_bypass":
+    if cls.auth_strategy == 'noauth':
         if not cls.endpoint_url:
             message = ('For "noauth" authentication strategy, the endpoint '
                        'must be specified either in the constructor or '
